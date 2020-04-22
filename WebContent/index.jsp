@@ -1,159 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    import="Models.User"
+    %>
+<%
+	String current_username = (String)request.getSession().getAttribute("current_username");
+	User current_user = User.whereUsername(current_username);
+	String current_user_fullName = current_user.getLastname()+" "+current_user.getFirstname(); 
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-  <title>AdminLTE 3 | Starter</title>
-
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="css/adminlte.min.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+	<!-- Common Layout Head -->
+  	<jsp:include page="components/header.jsp">
+  	<jsp:param name="pageTitle" value="MiniBlog"/>
+  	</jsp:include>
+  	
+	<!-- summernote -->
+	<link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-    </ul>
-
-    <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </div>
-    </form>
-
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Brad Diesel
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Call me whenever you can...</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John Pierce
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">I got your message bro</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Silvester
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">The subject goes here</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-        </div>
-      </li>
-      <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i
-            class="fas fa-th-large"></i></a>
-      </li>
-    </ul>
-  </nav>
+  <jsp:include page="components/navigationbar.jsp"/>
   <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
-  <jsp:include page="components/sidebar.jsp"/>
+  <!-- Main Sidebar -->
+  <jsp:include page="components/sidebar.jsp">
+    <jsp:param value="<%= current_user_fullName %>" name="current_user_fullName"/>
+  	<jsp:param value="active" name="home"/>
+  </jsp:include>
+  <!-- /.main-sidebar -->
   
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Starter Page</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Starter Page</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -162,61 +45,113 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up the bulk of the card's
-                  content.
-                </p>
-
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-              </div>
-            </div>
-
-            <div class="card card-primary card-outline">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up the bulk of the card's
-                  content.
-                </p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-              </div>
-            </div><!-- /.card -->
+          <div class="col-12">
+			<div class="card card-outline card-info">
+				<div class="card-header">
+					<h3 class="card-title">
+					  Write something today...
+					</h3>
+					<!-- tools box -->
+					<div class="card-tools">
+					  <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" data-toggle="tooltip"
+					          title="Collapse">
+					    <i class="fas fa-minus"></i></button>
+					  <button type="button" class="btn btn-tool btn-sm" data-card-widget="remove" data-toggle="tooltip"
+					          title="Remove">
+					    <i class="fas fa-times"></i></button>
+					</div>
+					<!-- /. tools -->
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body pad">
+				  <div class="mb-3">
+				    <textarea id="txt_newPost" class="textarea" placeholder="Place some text here"
+				              style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+				  </div>
+				  <button type="button" class="btn btn-block btn-primary">Post</button>
+				</div>
+			</div>
           </div>
-          <!-- /.col-md-6 -->
-          <div class="col-lg-6">
-            <div class="card">
+          
+          <div class="col-12">
+          	<div class="card card-widget">
               <div class="card-header">
-                <h5 class="m-0">Featured</h5>
+                <div class="user-block">
+                  <img class="img-circle" src="img/avatar5.png" alt="User Image">
+                  <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
+                  <span class="description">Shared publicly - 7:30 PM Today</span>
+                </div>
+                <!-- /.user-block -->
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
               </div>
+              <!-- /.card-header -->
               <div class="card-body">
-                <h6 class="card-title">Special title treatment</h6>
+                <!-- post text -->
+                <p>Far far away, behind the word mountains, far from the
+                  countries Vokalia and Consonantia, there live the blind
+                  texts. Separated they live in Bookmarksgrove right at</p>
 
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
+                <p>the coast of the Semantics, a large language ocean.
+                  A small river named Duden flows by their place and supplies
+                  it with the necessary regelialia. It is a paradisematic
+                  country, in which roasted parts of sentences fly into
+                  your mouth.</p>
 
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h5 class="m-0">Featured</h5>
+                <!-- Social sharing buttons -->
+                <button type="button" class="btn btn-default btn-sm"><i class="far fa-thumbs-up"></i> Like</button>
+                <span class="float-right text-muted">45 likes - 2 comments</span>
               </div>
-              <div class="card-body">
-                <h6 class="card-title">Special title treatment</h6>
+              <!-- /.card-body -->
+              <div class="card-footer card-comments">
+                <div class="card-comment">
+                  <!-- User image -->
+                  <img class="img-circle img-sm" src="img/avatar5.png" alt="User Image">
 
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                  <div class="comment-text">
+                    <span class="username">
+                      Maria Gonzales
+                      <span class="text-muted float-right">8:03 PM Today</span>
+                    </span><!-- /.username -->
+                    It is a long established fact that a reader will be distracted
+                    by the readable content of a page when looking at its layout.
+                  </div>
+                  <!-- /.comment-text -->
+                </div>
+                <!-- /.card-comment -->
+                <div class="card-comment">
+                  <!-- User image -->
+                  <img class="img-circle img-sm" src="img/avatar5.png" alt="User Image">
+
+                  <div class="comment-text">
+                    <span class="username">
+                      Nora Havisham
+                      <span class="text-muted float-right">8:03 PM Today</span>
+                    </span><!-- /.username -->
+                    The point of using Lorem Ipsum is that it hrs a morer-less
+                    normal distribution of letters, as opposed to using
+                    'Content here, content here', making it look like readable English.
+                  </div>
+                  <!-- /.comment-text -->
+                </div>
+                <!-- /.card-comment -->
               </div>
+              <!-- /.card-footer -->
+              <div class="card-footer">
+                <form action="#" method="post">
+                  <img class="img-fluid img-circle img-sm" src="img/avatar5.png" alt="Alt Text">
+                  <!-- .img-push is used to add margin to elements next to floating images -->
+                  <div class="img-push">
+                    <input type="text" class="form-control form-control-sm" placeholder="Press enter to post comment">
+                  </div>
+                </form>
+              </div>
+              <!-- /.card-footer -->
             </div>
           </div>
-          <!-- /.col-md-6 -->
         </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -226,34 +161,23 @@
   <!-- /.content-wrapper -->
 
   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-    <div class="p-3">
-      <h5>Title</h5>
-      <p>Sidebar content</p>
-    </div>
-  </aside>
+  <jsp:include page="components/controlbar.jsp"/>
   <!-- /.control-sidebar -->
 
   <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
-      L3 Informatique - Projet d'Applications d'entreprise
-    </div>
-    <!-- Default to the left -->
-    <strong>Template copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
+  <jsp:include page="components/footer.jsp"/>
+   <!-- /.main-footer -->
 </div>
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="js/adminlte.min.js"></script>
+<!-- Common Layout Script -->
+<jsp:include page="components/script.jsp"/>
+
+<!-- Summernote -->
+<script src="plugins/summernote/summernote-bs4.min.js"></script>
+
+<script src="js/index.js"></script>
 </body>
 </html>

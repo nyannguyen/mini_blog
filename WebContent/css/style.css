@@ -1,0 +1,9 @@
+.hidden-msg {
+	display: none;
+}
+
+.user-panel .image img {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
