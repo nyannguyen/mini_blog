@@ -93,11 +93,13 @@ public class PostDAO {
 		
 		Connection conn = DatabaseConnection.getConnection();
 		
-		String query = "SELECT * FROM tbl_posts WHERE uid=?";
+		String query = "SELECT * FROM tbl_posts WHERE (uid=?) OR (uid IN (SELECT uid_1 FROM tbl_relations WHERE uid_2=?)) OR (uid IN (SELECT uid_2 FROM tbl_relations WHERE uid_1=?)) ORDER BY id DESC";
 		
 		PreparedStatement pstm = conn.prepareStatement(query);
 				
 		pstm.setInt(1, uid);
+		pstm.setInt(2, uid);
+		pstm.setInt(3, uid);
 		
 		ResultSet rs = pstm.executeQuery();
 		
@@ -114,7 +116,7 @@ public class PostDAO {
 		
 		Connection conn = DatabaseConnection.getConnection();
 		
-		String query = "SELECT * FROM tbl_posts WHERE uid=?";
+		String query = "SELECT * FROM tbl_posts WHERE uid=? ORDER BY id DESC";
 		
 		PreparedStatement pstm = conn.prepareStatement(query);
 				

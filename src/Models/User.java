@@ -237,6 +237,10 @@ public class User {
 		return PostDAO.postCount(this.id);
 	}
 	
+	public ArrayList<Post> getFeeds() throws SQLException {
+		return PostDAO.getFeeds(this.id);
+	}
+	
 	public ArrayList<Post> getPosts() throws SQLException {
 		return PostDAO.getPostsWhereUid(this.id);
 	}
