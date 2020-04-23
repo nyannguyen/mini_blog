@@ -40,7 +40,7 @@ public class ProfileController extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		request.getSession().setAttribute("profile_user", profile_user);
+		request.setAttribute("profile_user", profile_user);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("profile.jsp");
 		dispatcher.forward(request, response);

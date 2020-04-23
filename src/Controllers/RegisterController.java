@@ -32,8 +32,15 @@ public class RegisterController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
-		dispatcher.forward(request, response);
+		String current_username = (String) request.getSession().getAttribute("current_username");
+		if(current_username != null) {
+			// Redirect to index page if user has logged in
+			response.sendRedirect(request.getContextPath()+"/index");
+		} else {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
+			dispatcher.forward(request, response);
+		}
+
 	}
 
 	/**
@@ -56,11 +63,15 @@ public class RegisterController extends HttpServlet {
 			} else {
 				if(User.whereEmail(email)!=null) {
 					request.getSession().setAttribute("errMsg", "Email has been existed!");
-					response.sendRedirect("register?errMsg=emailExist");
+					response.sendRedirect("register");
 				} else {
-					user.create();
-					request.getSession().setAttribute("succMsg", "Success! Please login to continue!");
-					response.sendRedirect("login?succMsg=registerSucc");
+					if(user.create()) {
+						request.getSession().setAttribute("succMsg", "Success! Please login to continue!");
+						response.sendRedirect("login?succMsg=registerSucc");
+					} else {
+						request.getSession().setAttribute("errMsg", "Some error occured! Please try again later!");
+						response.sendRedirect("register");
+					}
 				}
 			}
 		} catch (SQLException e) {

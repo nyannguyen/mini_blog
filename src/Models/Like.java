@@ -1,6 +1,9 @@
 package Models;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
+
+import DAO.PostDAO;
 
 /**
  * Relation class represents the relationship 
@@ -18,6 +21,14 @@ public class Like {
 	private int pid;
 	private Timestamp created_at;
 	
+	public Like(int id, int uid, int pid, Timestamp created_at) {
+		super();
+		this.id = id;
+		this.uid = uid;
+		this.pid = pid;
+		this.created_at = created_at;
+	}
+
 	/**
 	 * Constructor using when create a new like
 	 * @param uid
@@ -26,19 +37,6 @@ public class Like {
 	 */
 	public Like(int uid, int pid) {
 		super();
-		this.uid = uid;
-		this.pid = pid;
-	}
-
-	/**
-	 * Constructor using when load/update model from/to database
-	 * @param id
-	 * @param uid
-	 * @param pid
-	 */
-	public Like(int id, int uid, int pid) {
-		super();
-		this.id = id;
 		this.uid = uid;
 		this.pid = pid;
 	}
@@ -73,5 +71,13 @@ public class Like {
 
 	public void setCreated_at(Timestamp created_at) {
 		this.created_at = created_at;
+	}
+	
+	public boolean create() throws SQLException{
+		return PostDAO.addLike(this);
+	}
+	
+	public boolean remove() throws SQLException{
+		return PostDAO.unLike(this);
 	}
 }

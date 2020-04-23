@@ -5,7 +5,9 @@
 <%
 	String current_username = (String)request.getSession().getAttribute("current_username");
 	User current_user = User.whereUsername(current_username);
-	String current_user_fullName = current_user.getLastname()+" "+current_user.getFirstname(); 
+	String current_user_fullName = current_user.getLastname()+" "+current_user.getFirstname();
+	
+	request.setAttribute("current_user", current_user);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +24,9 @@
 <div class="wrapper">
 
   <!-- Navbar -->
-  <jsp:include page="components/navigationbar.jsp"/>
+  <jsp:include page="components/navigationbar.jsp">
+  <jsp:param value="<%= current_user.requestCount() %>" name="friend_request_count"/>
+  </jsp:include>
   <!-- /.navbar -->
 
   <!-- Main Sidebar -->
@@ -64,11 +68,13 @@
 				</div>
 				<!-- /.card-header -->
 				<div class="card-body pad">
-				  <div class="mb-3">
-				    <textarea id="txt_newPost" class="textarea" placeholder="Place some text here"
-				              style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-				  </div>
-				  <button type="button" class="btn btn-block btn-primary">Post</button>
+					<form method="post">
+						<div class="mb-3">
+						  <textarea name="post_description" id="txt_newPost" class="textarea" placeholder="Place some text here"
+						            style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+						</div>
+						<button type="submit" class="btn btn-block btn-primary">Post</button>
+	  				</form>
 				</div>
 			</div>
           </div>

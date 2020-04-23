@@ -1,6 +1,11 @@
 package Models;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import DAO.PostDAO;
 
 /**
  * Relation class represents the information 
@@ -100,5 +105,17 @@ public class Post {
 
 	public void setUpdated_At(Timestamp updated_At) {
 		this.updated_At = updated_At;
+	}
+	
+	public boolean create() throws SQLException {
+		return PostDAO.create(this);
+	}
+	
+	public HashMap<Integer,Like> getLikes() throws SQLException {
+		return PostDAO.getLikes(this.id);
+	}
+	
+	public ArrayList<Comment> getComments() throws SQLException {
+		return PostDAO.getComments(this.id);
 	}
 }

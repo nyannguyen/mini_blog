@@ -24,3 +24,15 @@ request.getSession().removeAttribute("succMsg");
 %>
 });
 </script>
+
+<script>
+function getDateTimeFormat(dt){
+	var date = (dt.getDate() < 10 ? '0' : '') + dt.getDate();
+	var month = (dt.getMonth() < 9 ? '0' : '') + (dt.getMonth()+1);
+	var year = dt.getFullYear();
+	var hour = (dt.getHours() < 10 ? '0' : '') + dt.getHours();
+	var minute = (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
+	
+	return date+"/"+month+"/"+year+" "+hour+":"+minute;
+}
+</script>

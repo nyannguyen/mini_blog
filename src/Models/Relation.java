@@ -1,6 +1,9 @@
 package Models;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
+
+import DAO.RelationDAO;
 
 /**
  * Relation class represents the information 
@@ -86,5 +89,9 @@ public class Relation {
 
 	public void setCreated_at(Timestamp created_at) {
 		this.created_at = created_at;
+	}
+	
+	public boolean create() throws SQLException {
+		return RelationDAO.create(this);
 	}
 }

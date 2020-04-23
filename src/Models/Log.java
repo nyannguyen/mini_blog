@@ -2,6 +2,7 @@ package Models;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import DAO.LogDAO;
 
@@ -71,5 +72,9 @@ public class Log {
 	
 	public boolean create() throws SQLException {
 		return LogDAO.create(this);
+	}
+	
+	public static ArrayList<Log> whereUid(int uid) throws SQLException {
+		return LogDAO.whereUid(uid);
 	}
 }

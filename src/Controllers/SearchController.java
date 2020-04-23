@@ -10,20 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Models.Post;
 import Models.User;
 
 /**
- * Servlet implementation class IndexController
+ * Servlet implementation class SearchController
  */
-@WebServlet(urlPatterns = {"/index"})
-public class IndexController extends HttpServlet {
+@WebServlet("/search")
+public class SearchController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public IndexController() {
+    public SearchController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,8 +31,19 @@ public class IndexController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub	
-		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		// TODO Auto-generated method stub
+		String keyword = request.getParameter("key");
+		
+		String current_username = (String) request.getSession().getAttribute("current_username");
+		
+		try {
+			request.setAttribute("search_result", User.findUsername(current_username, keyword));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			request.getSession().setAttribute("errMsg", e.toString());
+		}
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("search.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -42,26 +52,6 @@ public class IndexController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String post_description = request.getParameter("post_description");
-		String current_username = (String) request.getSession().getAttribute("current_username");
-		
-		if(!post_description.isBlank() && !post_description.isEmpty()) {
-			try {
-				Post post = new Post(User.whereUsername(current_username).getId(),post_description);
-				if(post.create()) {
-					request.getSession().setAttribute("succMsg", "Published!");
-				} else {
-					request.getSession().setAttribute("errMsg", "Some error occured! Please try again later!");
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				request.getSession().setAttribute("errMsg", e.toString());
-			}
-			
-		} else {
-			request.getSession().setAttribute("errMsg", "Post can not be empty!");
-		}
-		
 		doGet(request, response);
 	}
 

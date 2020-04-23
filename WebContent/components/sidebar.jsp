@@ -1,3 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+	import="Models.User"
+%>
+<%
+	User current_user = (User)request.getAttribute("current_user");
+%>
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="<%= request.getContextPath() %>" class="brand-link">
@@ -14,8 +22,8 @@
         <img src="img/avatar5.png" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">${param.current_user_fullName}</a>
-        <a href="#" class="d-block">@${current_username}</a>
+        <a href="<%= request.getContextPath() %>/profile?user=${current_username}" class="d-block"><%= current_user.getLastname()+" "+current_user.getFirstname() %></a>
+        <a href="<%= request.getContextPath() %>/profile?user=${current_username}" class="d-block">@${current_username}</a>
       </div>
     </div>
 

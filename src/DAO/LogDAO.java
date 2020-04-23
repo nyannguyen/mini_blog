@@ -54,7 +54,7 @@ public class LogDAO {
 		ArrayList<Log> result = new ArrayList<Log>();
 		Connection conn = DatabaseConnection.getConnection();
 		
-		String query = "SELECT * FROM tbl_log WHERE uid=? orderBy id DESC";
+		String query = "SELECT * FROM tbl_log WHERE uid=? ORDER BY id DESC";
 		
 		PreparedStatement pstm = conn.prepareStatement(query);
 				
@@ -62,7 +62,7 @@ public class LogDAO {
 		
 		ResultSet rs = pstm.executeQuery();
 		
-		if(rs.next()) {		
+		while(rs.next()) {		
 			result.add(loadResultSet(rs));
 		}
 		

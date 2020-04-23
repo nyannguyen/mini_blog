@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import Models.User;
 
@@ -115,6 +116,28 @@ public class UserDAO {
 		} else {
 			return null;
 		}
+	}
+	
+	public static ArrayList<User> findUsername(String current_username, String username) throws SQLException 
+	{
+		ArrayList<User> result = new ArrayList<User>();
+		
+		Connection conn = DatabaseConnection.getConnection();
+		
+		String query = "SELECT * FROM tbl_users WHERE (username <> ?) AND (username LIKE ?)";
+		
+		PreparedStatement pstm = conn.prepareStatement(query);
+				
+		pstm.setString(1, current_username);
+		pstm.setString(2, "%"+username+"%");
+		
+		ResultSet rs = pstm.executeQuery();
+		
+		while(rs.next()) {
+			result.add(loadResultSet(rs));
+		}
+		
+		return result;
 	}
 	
 	/**

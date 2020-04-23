@@ -1,6 +1,9 @@
 package Models;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
+
+import DAO.PostDAO;
 
 /**
  * Relation class represents the information 
@@ -89,4 +92,8 @@ public class Comment {
 	public void setCreated_at(Timestamp created_at) {
 		this.created_at = created_at;
 	}
+	
+	public boolean create() throws SQLException {
+		return PostDAO.addComment(this);
+	}	
 }

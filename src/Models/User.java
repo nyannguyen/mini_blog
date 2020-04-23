@@ -5,7 +5,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
+import DAO.PostDAO;
 import DAO.RelationDAO;
 import DAO.UserDAO;
 
@@ -203,8 +205,44 @@ public class User {
 		return RelationDAO.friendsCount(this.id);
 	}
 	
+	public int requestCount() throws SQLException {
+		return RelationDAO.requestCount(this.id);
+	}
+	
+	public ArrayList<User> getAllRequest() throws SQLException {
+		return RelationDAO.getAllRequest(this.id);
+	}
+	
+	public ArrayList<User> getAllFriends() throws SQLException {
+		return RelationDAO.getAllFriends(this.id);
+	}
+	
 	public int relationState(User user) throws SQLException {
 		return RelationDAO.relationState(this.id, user.id);
+	}
+	
+	public boolean acceptFriendRequest(int uid) throws SQLException {
+		return RelationDAO.acceptInvite(this.id, uid);
+	}
+	
+	public boolean removeFriend(int uid) throws SQLException {
+		return RelationDAO.removeFriend(this.id, uid);
+	}
+	
+	public static ArrayList<User> findUsername(String current_username, String username) throws SQLException {
+		return UserDAO.findUsername(current_username,username);
+	}
+	
+	public int postCount() throws SQLException {
+		return PostDAO.postCount(this.id);
+	}
+	
+	public ArrayList<Post> getPosts() throws SQLException {
+		return PostDAO.getPostsWhereUid(this.id);
+	}
+	
+	public String getFullName() {
+		return this.lastname+" "+this.firstname;
 	}
 
 	@Override
