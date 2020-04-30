@@ -135,10 +135,15 @@
 					                <div class="user-block">
 					                  <img class="img-circle" src="img/avatar5.png" alt="User Image">
 					                  <span class="username"><a href="<%= request.getContextPath() %>/profile?user=<%= profile_user.getUsername() %>">${ profile_user.lastname } ${ profile_user.firstname }</a></span>
-					                  <span class="description"><%= post_date %></span>
+			                  <a href="<%= request.getContextPath() %>/details?pid=<%= post.getId() %>" class="description"><%= post_date %></a>
 					                </div>
 					                <!-- /.user-block -->
 					                <div class="card-tools">
+					                								<a href="<%= request.getContextPath() %>/delete?pid=<%= post.getId() %>" type="button" class="btn btn-tool"><i class="fas fa-trash-alt"></i>
+			                  </a>
+					                
+					                  <a href="<%= request.getContextPath() %>/edit?pid=<%= post.getId() %>" type="button" class="btn btn-tool"><i class="fas fa-edit"></i>
+					                  </a>
 					                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
 					                  </button>
 					                </div>

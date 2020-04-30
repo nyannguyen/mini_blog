@@ -238,4 +238,76 @@ public class PostDAO {
 				
 		return true;
 	}
+	
+	public static Post whereId(int pid) throws SQLException
+	{
+		Connection conn = DatabaseConnection.getConnection();
+		
+		String query = "SELECT * FROM tbl_posts WHERE id=? LIMIT 1";
+		
+		PreparedStatement pstm = conn.prepareStatement(query);
+				
+		pstm.setInt(1, pid);
+		
+		ResultSet rs = pstm.executeQuery();
+		
+		if(rs.next()) {		
+			return loadResultSet(rs);
+		} else {
+			return null;
+		}
+	}
+	
+	public static boolean update(Post p) throws SQLException
+	{
+		Connection conn = DatabaseConnection.getConnection();
+		
+		String query = "UPDATE tbl_posts SET description=? , updated_at=? WHERE id=?";
+		
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		
+		PreparedStatement pstm = conn.prepareStatement(query);
+				
+		pstm.setString(1, p.getDescription());
+		pstm.setTimestamp(2, timestamp);
+		pstm.setInt(3, p.getId());
+		
+		int affectedRows = pstm.executeUpdate();
+		if(affectedRows == 0) return false;
+		
+		return true;
+	}
+	
+	public static boolean delete(int pid) throws SQLException
+	{
+		Connection conn = DatabaseConnection.getConnection();
+		
+		String query = "DELETE FROM tbl_likes WHERE pid=?";
+		
+		PreparedStatement pstm = conn.prepareStatement(query);
+				
+		pstm.setInt(1, pid);
+		
+		pstm.executeUpdate();
+		
+		query = "DELETE FROM tbl_comments WHERE pid=?";
+		
+		pstm = conn.prepareStatement(query);
+				
+		pstm.setInt(1, pid);
+		
+		pstm.executeUpdate();
+		
+		query = "DELETE FROM tbl_posts WHERE id=?";
+		
+		pstm = conn.prepareStatement(query);
+				
+		pstm.setInt(1, pid);
+		
+		int affectedRows = pstm.executeUpdate();
+		if(affectedRows == 0) return false;
+		
+		return true;
+	}
+
 }

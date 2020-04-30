@@ -118,4 +118,16 @@ public class Post {
 	public ArrayList<Comment> getComments() throws SQLException {
 		return PostDAO.getComments(this.id);
 	}
+	
+	public static Post whereId(int pid) throws SQLException {
+		return PostDAO.whereId(pid);
+	}
+	
+	public boolean update() throws SQLException {
+		return PostDAO.update(this);
+	}
+	
+	public boolean delete() throws SQLException {
+		return PostDAO.delete(this.id);
+	}
 }

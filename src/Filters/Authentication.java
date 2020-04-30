@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet Filter implementation class Authentication
  */
-@WebFilter(urlPatterns = {"/index/*","/profile/*","/comment/*"})
+@WebFilter(urlPatterns = {"/index/*","/profile/*","/comment/*","/post/*","/like/*","/details/*","/relation/*","/requests/*","/search/*","/edit/*","/delete/*"})
 public class Authentication implements Filter {
 
     /**

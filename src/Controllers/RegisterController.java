@@ -77,7 +77,7 @@ public class RegisterController extends HttpServlet {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			request.getSession().setAttribute("errMsg", e.toString());
-			response.sendRedirect("errMsg");
+			response.sendRedirect("register");
 		}
 	}
 
