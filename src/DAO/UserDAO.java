@@ -39,8 +39,12 @@ public class UserDAO {
 			user.setUpdated_at(rs.getTimestamp("updated_at"));
 			user.setDisabled_at(rs.getTimestamp("disabled_at"));
 			
+			pstm.close();
+			conn.close();
 			return true;
 		} else {
+			pstm.close();
+			conn.close();
 			return false;
 		}
 	}
@@ -69,13 +73,19 @@ public class UserDAO {
 		pstm.setTimestamp(6, timestamp);
 		
 		int affectedRows = pstm.executeUpdate();
-		if(affectedRows == 0) return false;
+		if(affectedRows == 0) {
+			pstm.close();
+			conn.close();
+			return false;
+		}
 		
 		ResultSet rs = pstm.getGeneratedKeys();
 		if(rs.next()) {
 			user.setId(rs.getInt(1));
 			user.setCreated_at(timestamp);
 		}		
+		pstm.close();
+		conn.close();
 		return true;
 	}
 	
@@ -112,8 +122,13 @@ public class UserDAO {
 		ResultSet rs = pstm.executeQuery();
 		
 		if(rs.next()) {		
-			return loadResultSet(rs);
+			User user = loadResultSet(rs);
+			pstm.close();
+			conn.close();
+			return user;
 		} else {
+			pstm.close();
+			conn.close();
 			return null;
 		}
 	}
@@ -136,7 +151,8 @@ public class UserDAO {
 		while(rs.next()) {
 			result.add(loadResultSet(rs));
 		}
-		
+		pstm.close();
+		conn.close();
 		return result;
 	}
 	
@@ -159,8 +175,13 @@ public class UserDAO {
 		ResultSet rs = pstm.executeQuery();
 		
 		if(rs.next()) {
-			return loadResultSet(rs);
+			User user = loadResultSet(rs);
+			pstm.close();
+			conn.close();
+			return user;
 		} else {
+			pstm.close();
+			conn.close();
 			return null;
 		}
 	}
@@ -184,8 +205,13 @@ public class UserDAO {
 		ResultSet rs = pstm.executeQuery();
 		
 		if(rs.next()) {
-			return loadResultSet(rs);
+			User user = loadResultSet(rs);
+			pstm.close();
+			conn.close();
+			return user;
 		} else {
+			pstm.close();
+			conn.close();
 			return null;
 		}
 	}
@@ -208,8 +234,13 @@ public class UserDAO {
 		pstm.setInt(6, user.getId());
 		
 		int affectedRows = pstm.executeUpdate();
-		if(affectedRows == 0) return false;
-		
+		if(affectedRows == 0) {
+			pstm.close();
+			conn.close();
+			return false;
+		}
+		pstm.close();
+		conn.close();
 		return true;
 	}
 }

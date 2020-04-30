@@ -29,13 +29,19 @@ public class PostDAO {
 		pstm.setTimestamp(3, timestamp);
 		
 		int affectedRows = pstm.executeUpdate();
-		if(affectedRows == 0) return false;
+		if(affectedRows == 0) {
+			pstm.close();
+			conn.close();
+			return false;
+		}
 		
 		ResultSet rs = pstm.getGeneratedKeys();
 		if(rs.next()) {
 			post.setId(rs.getInt(1));
 			post.setCreated_at(timestamp);
 		}		
+		pstm.close();
+		conn.close();
 		return true;
 	}
 	
@@ -52,8 +58,13 @@ public class PostDAO {
 		ResultSet rs = pstm.executeQuery();
 		
 		if(rs.next()) {
-			return rs.getInt(1);
+			int count = rs.getInt(1);
+			pstm.close();
+			conn.close();
+			return count;
 		} else {
+			pstm.close();
+			conn.close();
 			return 0;
 		}
 	}
@@ -106,7 +117,8 @@ public class PostDAO {
 		while(rs.next()) {
 			result.add(loadResultSet(rs));
 		}
-		
+		pstm.close();
+		conn.close();
 		return result;
 	}
 	
@@ -127,7 +139,8 @@ public class PostDAO {
 		while(rs.next()) {
 			result.add(loadResultSet(rs));
 		}
-		
+		pstm.close();
+		conn.close();
 		return result;
 	}
 	
@@ -147,6 +160,8 @@ public class PostDAO {
 		while(rs.next()) {
 			result.put(rs.getInt("uid"),loadLikeResultSet(rs));
 		}
+		pstm.close();
+		conn.close();
 		return result;
 	}
 	
@@ -167,7 +182,8 @@ public class PostDAO {
 		while(rs.next()) {
 			result.add(loadCommentResultSet(rs));
 		}
-		
+		pstm.close();
+		conn.close();
 		return result;
 	}
 	
@@ -187,13 +203,19 @@ public class PostDAO {
 		pstm.setTimestamp(4, timestamp);
 		
 		int affectedRows = pstm.executeUpdate();
-		if(affectedRows == 0) return false;
+		if(affectedRows == 0) {
+			pstm.close();
+			conn.close();
+			return false;
+		}
 		
 		ResultSet rs = pstm.getGeneratedKeys();
 		if(rs.next()) {
 			comment.setId(rs.getInt(1));
 			comment.setCreated_at(timestamp);
 		}		
+		pstm.close();
+		conn.close();
 		return true;
 	}
 	
@@ -212,13 +234,19 @@ public class PostDAO {
 		pstm.setTimestamp(3, timestamp);
 		
 		int affectedRows = pstm.executeUpdate();
-		if(affectedRows == 0) return false;
+		if(affectedRows == 0) {
+			pstm.close();
+			conn.close();
+			return false;
+		}
 		
 		ResultSet rs = pstm.getGeneratedKeys();
 		if(rs.next()) {
 			like.setId(rs.getInt(1));
 			like.setCreated_at(timestamp);
 		}		
+		pstm.close();
+		conn.close();
 		return true;
 	}
 	
@@ -234,8 +262,14 @@ public class PostDAO {
 		pstm.setInt(2, like.getPid());
 		
 		int affectedRows = pstm.executeUpdate();
-		if(affectedRows == 0) return false;
+		if(affectedRows == 0) {
+			pstm.close();
+			conn.close();
+			return false;
+		}
 				
+		pstm.close();
+		conn.close();
 		return true;
 	}
 	
@@ -252,8 +286,13 @@ public class PostDAO {
 		ResultSet rs = pstm.executeQuery();
 		
 		if(rs.next()) {		
-			return loadResultSet(rs);
+			Post p = loadResultSet(rs);
+			pstm.close();
+			conn.close();
+			return p;
 		} else {
+			pstm.close();
+			conn.close();
 			return null;
 		}
 	}

@@ -27,8 +27,13 @@ public class RelationDAO {
 		ResultSet rs = pstm.executeQuery();
 		
 		if(rs.next()) {
-			return rs.getInt(1);
+			int count = rs.getInt(1);
+			pstm.close();
+			conn.close();
+			return count;
 		} else {
+			pstm.close();
+			conn.close();
 			return 0;
 		}
 	}
@@ -49,13 +54,19 @@ public class RelationDAO {
 		pstm.setTimestamp(4, timestamp);
 		
 		int affectedRows = pstm.executeUpdate();
-		if(affectedRows == 0) return false;
+		if(affectedRows == 0) {
+			pstm.close();
+			conn.close();
+			return false;
+		}
 		
 		ResultSet rs = pstm.getGeneratedKeys();
 		if(rs.next()) {
 			r.setId(rs.getInt(1));
 			r.setCreated_at(timestamp);
 		}		
+		pstm.close();
+		conn.close();
 		return true;
 	}
 
@@ -84,10 +95,22 @@ public class RelationDAO {
 		
 		if(rs.next()) {
 			int status = rs.getInt("status");
-			if(status == 1) return 2;
-			if(uid1 == rs.getInt("uid_1")) return 0;
+			if(status == 1) {
+				pstm.close();
+				conn.close();
+				return 2;
+			}
+			if(uid1 == rs.getInt("uid_1")) {
+				pstm.close();
+				conn.close();
+				return 0;
+			}
+			pstm.close();
+			conn.close();
 			return 1;
 		} else {
+			pstm.close();
+			conn.close();
 			return -1;
 		}
 	}
@@ -104,8 +127,13 @@ public class RelationDAO {
 		pstm.setInt(2, uid1);
 		
 		int affectedRows = pstm.executeUpdate();
-		if(affectedRows == 0) return false;
-		
+		if(affectedRows == 0) {
+			pstm.close();
+			conn.close();
+			return false;
+		}
+		pstm.close();
+		conn.close();
 		return true;
 	}
 	
@@ -123,8 +151,14 @@ public class RelationDAO {
 		pstm.setInt(4, uid1);
 		
 		int affectedRows = pstm.executeUpdate();
-		if(affectedRows == 0) return false;
+		if(affectedRows == 0) {
+			pstm.close();
+			conn.close();
+			return false;
+		}
 		
+		pstm.close();
+		conn.close();
 		return true;
 	}
 	
@@ -141,8 +175,13 @@ public class RelationDAO {
 		ResultSet rs = pstm.executeQuery();
 		
 		if(rs.next()) {
-			return rs.getInt(1);
+			int count = rs.getInt(1);
+			pstm.close();
+			conn.close();
+			return count;
 		} else {
+			pstm.close();
+			conn.close();
 			return 0;
 		}
 	}
@@ -164,7 +203,8 @@ public class RelationDAO {
 		while(rs.next()) {
 			result.add(User.whereId(rs.getInt(1)));
 		}
-		
+		pstm.close();
+		conn.close();
 		return result;
 	}
 	
@@ -191,7 +231,8 @@ public class RelationDAO {
 				result.add(User.whereId(rs.getInt(1)));
 			}
 		}
-		
+		pstm.close();
+		conn.close();
 		return result;
 	}
 }

@@ -25,13 +25,19 @@ public class LogDAO {
 		pstm.setTimestamp(3, timestamp);
 		
 		int affectedRows = pstm.executeUpdate();
-		if(affectedRows == 0) return false;
+		if(affectedRows == 0) {
+			pstm.close();
+			conn.close();
+			return false;
+		}
 		
 		ResultSet rs = pstm.getGeneratedKeys();
 		if(rs.next()) {
 			log.setId(rs.getInt(1));
 			log.setCreated_at(timestamp);
-		}		
+		}	
+		pstm.close();
+		conn.close();
 		return true;
 	}
 	
@@ -65,7 +71,8 @@ public class LogDAO {
 		while(rs.next()) {		
 			result.add(loadResultSet(rs));
 		}
-		
+		pstm.close();
+		conn.close();
 		return result;
 	}
 }
